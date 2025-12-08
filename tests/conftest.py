@@ -1,81 +1,135 @@
-import os
+"""
+Pytest configuration and shared fixtures for integration and unit tests.
+
+This module provides test fixtures and helper functions used across
+all test suites. It sets up a clean test environment with an in-memory
+database and provides utilities for authentication and user management.
+"""
 import pytest
 
 from app import create_app, db
+from app.models import User
 from config import Config
-from tests.factories import (
-    create_message,
-    create_post,
-    create_user,
-    link_followers,
-)
 
 
 class TestConfig(Config):
-    TESTING = True
+    """Test configuration overriding production settings."""
+    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
     WTF_CSRF_ENABLED = False
-    SERVER_NAME = 'localhost.localdomain'
-    SQLALCHEMY_DATABASE_URI = 'sqlite://'
-    ELASTICSEARCH_URL = None
-    REDIS_URL = 'redis://'
+    TESTING = True
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def app():
+    """Create and configure Flask application for testing."""
     app = create_app(TestConfig)
     with app.app_context():
         yield app
-        db.session.remove()
-        db.drop_all()
 
 
-@pytest.fixture()
-def db_session(app):
+@pytest.fixture
+def client(app):
+    """
+    Create a test client for making HTTP requests.
+    
+    Sets up a fresh database for each test and cleans up afterwards.
+    """
     with app.app_context():
-        db.drop_all()
         db.create_all()
-        yield db.session
+        yield app.test_client()
         db.session.remove()
+        db.drop_all()
 
 
-@pytest.fixture()
-def client(app, db_session):
-    return app.test_client()
+@pytest.fixture
+def user(client):
+    """
+    Create a test user for authentication tests.
+    
+    Returns:
+        User: A user instance with username 'testuser' and password 'testpass'
+    """
+    user = User(username="testuser", email="testuser@example.com")
+    user.set_password("testpass")
+    db.session.add(user)
+    db.session.commit()
+    return user
 
 
-@pytest.fixture()
-def runner(app, db_session):
-    return app.test_cli_runner()
+@pytest.fixture
+def auth_headers(user: User):
+    """
+    Generate authentication headers with Bearer token.
+    
+    Args:
+        user: User instance to generate token for
+        
+    Returns:
+        dict: Headers dictionary with Authorization Bearer token
+    """
+    token = user.get_token()
+    db.session.commit()
+    return {"Authorization": f"Bearer {token}"}
 
 
-@pytest.fixture()
-def user_factory(db_session):
-    def factory(**kwargs):
-        return create_user(**kwargs)
-
-    return factory
-
-
-@pytest.fixture()
-def post_factory(db_session):
-    def factory(**kwargs):
-        return create_post(**kwargs)
-
-    return factory
+@pytest.fixture
+def second_user(client):
+    """Create a second test user for testing interactions between users."""
+    user = User(username="otheruser", email="otheruser@example.com")
+    user.set_password("otherpass")
+    db.session.add(user)
+    db.session.commit()
+    return user
 
 
-@pytest.fixture()
-def message_factory(db_session):
-    def factory(**kwargs):
-        return create_message(**kwargs)
+def login_user_via_client(client, username, password):
+    """
+    Helper function to log in a user via test client.
+    
+    Args:
+        client: Flask test client
+        username: Username to log in with
+        password: Password to log in with
+        
+    Returns:
+        Response: Flask response object from login request
+    """
+    return client.post(
+        "/auth/login",
+        data={"username": username, "password": password},
+        follow_redirects=False,
+    )
 
-    return factory
+
+def is_logged_in(client):
+    """
+    Check if a user is currently logged in via test client.
+    
+    Args:
+        client: Flask test client
+        
+    Returns:
+        bool: True if user is logged in, False otherwise
+    """
+    return ("Sign In" and "Redirecting...") not in client.get("/index").get_data(
+        as_text=True
+    )
 
 
-@pytest.fixture()
-def follow_factory(db_session):
-    def factory(*pairs, commit=True):
-        return link_followers(*pairs, commit=commit)
-
-    return factory
-
+def create_test_user(username="testuser", email="testuser@example.com", password="testpass"):
+    """
+    Helper function to create a test user in the database.
+    
+    Args:
+        username: Username for the new user
+        email: Email for the new user
+        password: Password for the new user
+        
+    Returns:
+        User: Created user instance
+    """
+    user = User(username=username, email=email)
+    user.set_password(password)
+    db.session.add(user)
+    db.session.commit()
+    return user
