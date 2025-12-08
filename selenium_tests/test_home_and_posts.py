@@ -1,8 +1,3 @@
-"""
-End-to-end tests for home page and post functionality.
-
-Tests verify post creation, display, pagination, and explore page functionality.
-"""
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -12,7 +7,6 @@ from seed_data import SEEDED_USERS
 
 
 def test_user_can_create_and_view_post(browser, live_server):
-    """Test that a logged-in user can create a post and see it on the homepage."""
     login_user(browser, live_server)
     post_content = "My first post"
 
@@ -22,7 +16,6 @@ def test_user_can_create_and_view_post(browser, live_server):
 
 
 def test_empty_post_form_does_not_create_post(browser, live_server):
-    """Test that submitting an empty post form does not create a post."""
     login_user(browser, live_server)
 
     browser.get(f"{live_server}/index")
@@ -42,7 +35,6 @@ def test_empty_post_form_does_not_create_post(browser, live_server):
 
 
 def test_posts_appear_on_explore_page(browser, live_server):
-    """Test that posts created by users appear on the explore page."""
     login_user(browser, live_server)
     post_content = "explore_test_post"
 
@@ -57,7 +49,6 @@ def test_posts_appear_on_explore_page(browser, live_server):
 
 
 def test_post_display_includes_user_info_and_timestamp(browser, live_server):
-    """Test that posts display correctly with author info, avatar, and timestamp."""
     login_user(
         browser,
         live_server,
@@ -83,7 +74,6 @@ def test_post_display_includes_user_info_and_timestamp(browser, live_server):
 
 
 def test_pagination_navigation_works_correctly(browser, live_server):
-    """Test that pagination links work correctly when multiple pages of posts exist."""
     login_user(browser, live_server)
 
     # Create multiple posts to trigger pagination

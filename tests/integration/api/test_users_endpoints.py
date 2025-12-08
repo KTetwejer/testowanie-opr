@@ -1,8 +1,3 @@
-"""
-Integration tests for API user endpoints.
-
-Tests cover user creation, retrieval, updates, and follower/following relationships.
-"""
 import json
 
 from app import db
@@ -10,7 +5,6 @@ from app.models import User
 
 
 def test_create_user_successfully(client):
-    """Test creating a new user via API returns 201 and creates user in database."""
     payload = {
         "username": "u1",
         "email": "u1@example.com",
@@ -32,20 +26,17 @@ def test_create_user_successfully(client):
 
 
 def test_get_users_list_requires_authentication(client):
-    """Test that GET /api/users requires authentication."""
     response = client.get("/api/users")
     assert response.status_code == 401
 
 
 def test_get_users_list_with_authentication(client, auth_headers):
-    """Test retrieving list of users with valid authentication."""
     response = client.get("/api/users", headers=auth_headers)
     assert response.status_code == 200
     assert "items" in response.get_json()
 
 
 def test_create_user_with_duplicate_username_returns_400(client):
-    """Test that creating a user with duplicate username returns 400."""
     payload = {
         "username": "u1",
         "email": "u1@example.com",
@@ -70,7 +61,6 @@ def test_create_user_with_duplicate_username_returns_400(client):
 
 
 def test_create_user_with_duplicate_email_returns_400(client):
-    """Test that creating a user with duplicate email returns 400."""
     payload1 = {
         "username": "u1",
         "email": "u1@example.com",
@@ -96,13 +86,11 @@ def test_create_user_with_duplicate_email_returns_400(client):
 
 
 def test_get_user_requires_authentication(client, user):
-    """Test that retrieving a user requires authentication."""
     response = client.get(f"/api/users/{user.id}")
     assert response.status_code == 401
 
 
 def test_get_user_with_valid_token_returns_user_data(client, user, auth_headers):
-    """Test retrieving user data with valid authentication token."""
     response = client.get(f"/api/users/{user.id}", headers=auth_headers)
     
     assert response.status_code == 200
@@ -110,7 +98,6 @@ def test_get_user_with_valid_token_returns_user_data(client, user, auth_headers)
 
 
 def test_get_followers_returns_empty_list_for_new_user(client, user, auth_headers):
-    """Test that a new user has no followers."""
     user2 = User(username="testuser2", email="testuser2@example.com")
     user2.set_password("SecondUserPass2024!")
     db.session.add(user2)
@@ -126,7 +113,6 @@ def test_get_followers_returns_empty_list_for_new_user(client, user, auth_header
 
 
 def test_get_following_returns_empty_list_for_new_user(client, user, auth_headers):
-    """Test that a new user is not following anyone."""
     user2 = User(username="testuser2", email="testuser2@example.com")
     user2.set_password("SecondUserPass2024!")
     db.session.add(user2)
@@ -142,7 +128,6 @@ def test_get_following_returns_empty_list_for_new_user(client, user, auth_header
 
 
 def test_update_own_user_profile_succeeds(client, user, auth_headers):
-    """Test that a user can update their own profile."""
     update_data = {
         "username": "new",
         "email": "n@example.com"
@@ -161,7 +146,6 @@ def test_update_own_user_profile_succeeds(client, user, auth_headers):
 
 
 def test_update_user_with_duplicate_username_returns_400(client, user, auth_headers):
-    """Test that updating to a duplicate username returns 400."""
     user2 = User(username="testuser2", email="testuser2@example.com")
     user2.set_password("SecondUserPass2024!")
     db.session.add(user2)
@@ -178,7 +162,6 @@ def test_update_user_with_duplicate_username_returns_400(client, user, auth_head
 
 
 def test_update_other_user_profile_returns_403(client, user, auth_headers):
-    """Test that updating another user's profile returns 403 Forbidden."""
     user2 = User(username="testuser2", email="testuser2@example.com")
     user2.set_password("SecondUserPass2024!")
     db.session.add(user2)

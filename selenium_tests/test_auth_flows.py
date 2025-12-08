@@ -1,10 +1,3 @@
-"""
-End-to-end tests for user authentication flows.
-
-These tests verify the complete user authentication workflow including
-registration, login, logout, and password reset functionality through
-the web interface.
-"""
 import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -15,7 +8,6 @@ from seed_data import SEEDED_USERS
 
 
 def test_user_registration_creates_new_account(browser, live_server):
-    """Test that a new user can successfully register an account."""
     browser.get(f"{live_server}/auth/register")
     WebDriverWait(browser, 5).until(
         EC.presence_of_element_located((By.NAME, "username"))
@@ -34,7 +26,6 @@ def test_user_registration_creates_new_account(browser, live_server):
 
 
 def test_registration_rejects_duplicate_username(browser, live_server):
-    """Test that registration form shows error for duplicate username."""
     browser.get(f"{live_server}/auth/register")
     WebDriverWait(browser, 5).until(
         EC.presence_of_element_located((By.NAME, "username"))
@@ -57,13 +48,11 @@ def test_registration_rejects_duplicate_username(browser, live_server):
 
 
 def test_successful_login_redirects_to_homepage(browser, live_server):
-    """Test that successful login redirects user to homepage with greeting."""
     login_user(browser, live_server)
     assert "Hi, testuser!" in browser.page_source
 
 
 def test_login_with_invalid_credentials_shows_error_message(browser, live_server):
-    """Test that login with invalid credentials displays error message."""
     browser.get(f"{live_server}/auth/login")
     WebDriverWait(browser, 5).until(
         EC.presence_of_element_located((By.NAME, "username"))
@@ -95,7 +84,6 @@ def test_login_with_invalid_credentials_shows_error_message(browser, live_server
 
 
 def test_logout_redirects_to_login_page(browser, live_server):
-    """Test that logout redirects user to login page and clears session."""
     login_user(browser, live_server)
     browser.get(f"{live_server}/auth/logout")
 
@@ -110,15 +98,6 @@ def test_logout_redirects_to_login_page(browser, live_server):
 
 
 def test_password_reset_workflow_completes_successfully(browser, live_server, app_instance):
-    """
-    Test the complete password reset workflow from request to login with new password.
-    
-    This test verifies:
-    1. User can request password reset
-    2. Reset token can be used to set new password
-    3. User can login with new password
-    4. Old password no longer works
-    """
     browser.get(f"{live_server}/auth/reset_password_request")
     WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.NAME, "email")))
 

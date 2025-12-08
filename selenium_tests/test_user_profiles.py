@@ -1,9 +1,3 @@
-"""
-End-to-end tests for user profile functionality.
-
-Tests verify profile editing, profile page display, and navigation
-between own profile and other users' profiles.
-"""
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -13,7 +7,6 @@ from seed_data import SEEDED_USERS
 
 
 def test_edit_profile_form_prefills_current_user_data(browser, live_server):
-    """Test that edit profile form is pre-filled with current user's data."""
     login_user(browser, live_server)
 
     browser.get(f"{live_server}/edit_profile")
@@ -29,7 +22,6 @@ def test_edit_profile_form_prefills_current_user_data(browser, live_server):
 
 
 def test_edit_profile_updates_user_information(browser, live_server):
-    """Test that editing profile successfully updates user information."""
     login_user(browser, live_server)
 
     browser.get(f"{live_server}/edit_profile")
@@ -64,7 +56,6 @@ def test_edit_profile_updates_user_information(browser, live_server):
 
 
 def test_edit_profile_rejects_duplicate_username(browser, live_server):
-    """Test that edit profile form shows error when trying to use existing username."""
     login_user(browser, live_server)
 
     browser.get(f"{live_server}/edit_profile")
@@ -87,7 +78,6 @@ def test_edit_profile_rejects_duplicate_username(browser, live_server):
 
 
 def test_own_profile_shows_edit_and_export_links(browser, live_server):
-    """Test that viewing own profile shows edit and export links, but not follow/message."""
     login_user(browser, live_server)
 
     browser.get(f"{live_server}/user/{SEEDED_USERS['testuser']['username']}")
@@ -110,7 +100,6 @@ def test_own_profile_shows_edit_and_export_links(browser, live_server):
 
 
 def test_other_user_profile_shows_follow_and_message_links(browser, live_server):
-    """Test that viewing another user's profile shows follow and message options."""
     login_user(browser, live_server)
 
     browser.get(f"{live_server}/user/{SEEDED_USERS['otheruser']['username']}")
@@ -131,7 +120,6 @@ def test_other_user_profile_shows_follow_and_message_links(browser, live_server)
 
 
 def test_follow_button_changes_to_unfollow_after_following(browser, live_server):
-    """Test that follow button changes to unfollow button after following a user."""
     login_user(browser, live_server)
 
     browser.get(f"{live_server}/user/{SEEDED_USERS['otheruser']['username']}")

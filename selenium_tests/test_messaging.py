@@ -1,9 +1,3 @@
-"""
-End-to-end tests for private messaging functionality.
-
-Tests verify message sending, receiving, message count display,
-and form validation for the messaging feature.
-"""
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -13,7 +7,6 @@ from seed_data import SEEDED_USERS
 
 
 def test_user_can_send_private_message(browser, live_server):
-    """Test that a logged-in user can send a private message to another user."""
     login_user(browser, live_server)
 
     browser.get(f"{live_server}/send_message/{SEEDED_USERS['otheruser']['username']}")
@@ -37,13 +30,6 @@ def test_user_can_send_private_message(browser, live_server):
 
 
 def test_message_count_updates_after_receiving_message(browser, live_server):
-    """
-    Test that unread message count badge appears and updates correctly.
-    
-    Verifies:
-    1. Message count badge appears after receiving a message
-    2. Badge disappears after reading messages
-    """
     login_user(browser, live_server)
 
     browser.get(f"{live_server}/send_message/{SEEDED_USERS['otheruser']['username']}")
@@ -106,7 +92,6 @@ def test_message_count_updates_after_receiving_message(browser, live_server):
 
 
 def test_sending_message_to_nonexistent_user_shows_error(browser, live_server):
-    """Test that attempting to send a message to non-existent user shows error page."""
     login_user(browser, live_server)
 
     browser.get(f"{live_server}/send_message/nonexistentuser")
@@ -118,7 +103,6 @@ def test_sending_message_to_nonexistent_user_shows_error(browser, live_server):
 
 
 def test_message_form_validation_prevents_empty_messages(browser, live_server):
-    """Test that submitting an empty message form keeps user on the form page."""
     login_user(browser, live_server)
 
     browser.get(f"{live_server}/send_message/{SEEDED_USERS['otheruser']['username']}")

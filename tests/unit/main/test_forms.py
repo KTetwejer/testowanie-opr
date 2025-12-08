@@ -1,16 +1,9 @@
-"""
-Unit tests for main application form validators.
-
-Tests verify form validation for profile editing, post creation,
-and message sending functionality.
-"""
 from app import db
 from app.models import User
 from app.main.forms import EditProfileForm, PostForm, MessageForm
 
 
 def test_edit_profile_form_rejects_duplicate_username(app, client):
-    """Test that edit profile form rejects usernames already taken by other users."""
     user = User(username="taken", email="taken@example.com")
     user.set_password("MainFormPass2024!")
     db.session.add(user)
@@ -30,7 +23,6 @@ def test_edit_profile_form_rejects_duplicate_username(app, client):
 
 
 def test_post_form_validates_with_valid_content(app, client):
-    """Test that post form validates successfully with valid post content."""
     with client.application.test_request_context():
         form = PostForm()
         form.post.data = "hello"
@@ -38,7 +30,6 @@ def test_post_form_validates_with_valid_content(app, client):
 
 
 def test_message_form_validates_with_valid_message_content(app, client):
-    """Test that message form validates successfully with valid message content."""
     with client.application.test_request_context():
         form = MessageForm()
         form.message.data = "hi"

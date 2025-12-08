@@ -1,9 +1,3 @@
-"""
-End-to-end tests for social features including following, followers, and user interactions.
-
-Tests verify follow/unfollow functionality, follower count updates,
-and user popup displays on the explore page.
-"""
 import time
 
 from selenium.webdriver.common.action_chains import ActionChains
@@ -16,7 +10,6 @@ from seed_data import SEEDED_USERS
 
 
 def test_follow_button_changes_to_unfollow_after_clicking(browser, live_server):
-    """Test that follow button changes to unfollow after following a user."""
     login_user(browser, live_server)
 
     browser.get(f"{live_server}/user/{SEEDED_USERS['otheruser']['username']}")
@@ -33,7 +26,6 @@ def test_follow_button_changes_to_unfollow_after_clicking(browser, live_server):
 
 
 def test_followed_user_posts_appear_on_home_feed(browser, live_server):
-    """Test that posts from followed users appear on the home feed."""
     login_user(browser, live_server)
 
     browser.get(f"{live_server}/user/{SEEDED_USERS['otheruser']['username']}")
@@ -75,7 +67,6 @@ def test_follower_count_updates_when_user_is_followed(browser, live_server):
 
 
 def test_follower_count_decreases_when_user_is_unfollowed(browser, live_server):
-    """Test that follower count decreases when a user is unfollowed."""
     login_user(browser, live_server)
 
     browser.get(f"{live_server}/user/{SEEDED_USERS['otheruser']['username']}")
@@ -103,7 +94,6 @@ def test_follower_count_decreases_when_user_is_unfollowed(browser, live_server):
 
 
 def test_user_popup_displays_on_hover(browser, live_server):
-    """Test that user popup appears when hovering over username link on explore page."""
     login_user(browser, live_server)
 
     browser.get(f"{live_server}/explore")
