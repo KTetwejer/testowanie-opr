@@ -12,11 +12,11 @@ from app.models import User
 def test_generate_token_with_valid_credentials(client):
     """Test that valid Basic auth credentials return a token."""
     user = User(username="u", email="u@example.com")
-    user.set_password("testpass")
+    user.set_password("ApiUserPass2024!")
     db.session.add(user)
     db.session.commit()
 
-    credentials = b64encode(b"u:testpass").decode("utf-8")
+    credentials = b64encode(b"u:ApiUserPass2024!").decode("utf-8")
     response = client.post(
         "/api/tokens",
         headers={"Authorization": f"Basic {credentials}"}
@@ -35,11 +35,11 @@ def test_generate_token_without_credentials_returns_401(client):
 def test_generate_token_with_invalid_credentials_returns_401(client):
     """Test that invalid Basic auth credentials return 401."""
     user = User(username="u", email="u@example.com")
-    user.set_password("testpass")
+    user.set_password("ApiUserPass2024!")
     db.session.add(user)
     db.session.commit()
 
-    wrong_credentials = b64encode(b"u:wrongpass").decode("utf-8")
+    wrong_credentials = b64encode(b"u:WrongPassword123").decode("utf-8")
     response = client.post(
         "/api/tokens",
         headers={"Authorization": f"Basic {wrong_credentials}"}

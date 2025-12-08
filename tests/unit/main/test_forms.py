@@ -12,7 +12,7 @@ from app.main.forms import EditProfileForm, PostForm, MessageForm
 def test_edit_profile_form_rejects_duplicate_username(app, client):
     """Test that edit profile form rejects usernames already taken by other users."""
     user = User(username="taken", email="taken@example.com")
-    user.set_password("password")
+    user.set_password("MainFormPass2024!")
     db.session.add(user)
     db.session.commit()
 

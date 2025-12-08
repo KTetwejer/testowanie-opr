@@ -5,7 +5,7 @@ from tests.conftest import login_user_via_client, is_logged_in
 
 
 def test_login_redirect_when_authenticated(client, user):
-    login_user_via_client(client, "testuser", "testpass")
+    login_user_via_client(client, "testuser", "TestPass2024!")
     r = client.get("/auth/login")
     assert r.status_code == 302
 
@@ -13,32 +13,32 @@ def test_login_redirect_when_authenticated(client, user):
 def test_login(client):
     client.post(
         "/auth/login",
-        data={"username": "nonexistent", "password": "p"},
+        data={"username": "nonexistent", "password": "WrongPass123"},
         follow_redirects=False,
     )
     assert not is_logged_in(client)
 
     user = User(username="u", email="u@example.com")
-    user.set_password("p")
+    user.set_password("UserPass456!")
     db.session.add(user)
     db.session.commit()
 
     client.post(
         "/auth/login?next=/index",
-        data={"username": "u", "password": "p", "remember_me": "y"},
+        data={"username": "u", "password": "UserPass456!", "remember_me": "y"},
         follow_redirects=False,
     )
     assert is_logged_in(client)
 
 
 def test_logout(client, user):
-    login_user_via_client(client, "testuser", "testpass")
+    login_user_via_client(client, "testuser", "TestPass2024!")
     client.get("/auth/logout")
     assert not is_logged_in(client)
 
 
 def test_register_redirect_when_authenticated(client, user):
-    login_user_via_client(client, "testuser", "testpass")
+    login_user_via_client(client, "testuser", "TestPass2024!")
     r = client.get("/auth/register")
     assert r.status_code == 302
 
@@ -49,8 +49,8 @@ def test_register(client):
         data={
             "username": "newuser",
             "email": "newuser@example.com",
-            "password": "p",
-            "password2": "p",
+            "password": "NewUserPass789@",
+            "password2": "NewUserPass789@",
         },
         follow_redirects=False,
     )
@@ -62,14 +62,14 @@ def test_register(client):
 
 def test_reset_password_with_token(client, user):
     user = db.session.get(User, user.id)
-    assert user.check_password("testpass")
+    assert user.check_password("TestPass2024!")
 
     token = user.get_reset_password_token()
     client.post(
         f"/auth/reset_password/{token}",
-        data={"password": "newpass", "password2": "newpass"},
+        data={"password": "ResetPass2024#", "password2": "ResetPass2024#"},
         follow_redirects=False,
     )
 
     user_updated = db.session.get(User, user.id)
-    assert user_updated.check_password("newpass")
+    assert user_updated.check_password("ResetPass2024#")

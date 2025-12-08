@@ -17,27 +17,25 @@ from app.auth.forms import (
 def test_registration_form_rejects_duplicate_username(app, client):
     """Test that registration form rejects usernames that already exist."""
     user = User(username="u", email="u@example.com")
-    user.set_password("password")
+    user.set_password("FormTestPass2024!")
     db.session.add(user)
     db.session.commit()
 
     with client.application.test_request_context():
-        # Try to register with existing username
         form = RegistrationForm()
         form.username.data = "u"
         form.email.data = "u@example.com"
-        form.password.data = "password"
-        form.password2.data = "password"
+        form.password.data = "FormTestPass2024!"
+        form.password2.data = "FormTestPass2024!"
 
         assert not form.validate()
         assert len(form.username.errors) > 0
 
-        # Register with unique username should succeed
         form2 = RegistrationForm()
         form2.username.data = "u2"
         form2.email.data = "u2@example.com"
-        form2.password.data = "password"  
-        form2.password2.data = "password"
+        form2.password.data = "FormTestPass2024!"
+        form2.password2.data = "FormTestPass2024!"
         assert form2.validate()
 
 

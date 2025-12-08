@@ -23,8 +23,8 @@ def test_user_registration_creates_new_account(browser, live_server):
 
     browser.find_element(By.NAME, "username").send_keys("newuser")
     browser.find_element(By.NAME, "email").send_keys("newuser@example.com")
-    browser.find_element(By.NAME, "password").send_keys("password123")
-    browser.find_element(By.NAME, "password2").send_keys("password123")
+    browser.find_element(By.NAME, "password").send_keys("NewUser2024!")
+    browser.find_element(By.NAME, "password2").send_keys("NewUser2024!")
     browser.find_element(
         By.CSS_SELECTOR, "input[type=submit], button[type=submit]"
     ).click()
@@ -75,7 +75,7 @@ def test_login_with_invalid_credentials_shows_error_message(browser, live_server
 
     password_field = browser.find_element(By.NAME, "password")
     password_field.clear()
-    password_field.send_keys("wrongpassword")
+    password_field.send_keys("IncorrectPass2024!")
 
     submit_button = browser.find_element(
         By.CSS_SELECTOR, "input[type=submit], button[type=submit]"
@@ -163,9 +163,11 @@ def test_password_reset_workflow_completes_successfully(browser, live_server, ap
         By.CSS_SELECTOR, "input[type=submit], button[type=submit]"
     )
 
-    new_password = "newtestpassword123"
-    browser.find_element(By.NAME, "password").send_keys(new_password)
-    browser.find_element(By.NAME, "password2").send_keys(new_password)
+    new_password = "ResetPassword2024#"
+    password_field = browser.find_element(By.NAME, "password")
+    password_field.send_keys(new_password)
+    password2_field = browser.find_element(By.NAME, "password2")
+    password2_field.send_keys(new_password)
     browser.find_element(
         By.CSS_SELECTOR, "input[type=submit], button[type=submit]"
     ).click()

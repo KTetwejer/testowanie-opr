@@ -14,7 +14,7 @@ def test_create_user_successfully(client):
     payload = {
         "username": "u1",
         "email": "u1@example.com",
-        "password": "P@ssw0rd"
+        "password": "NewApiUser2024!"
     }
     response = client.post(
         "/api/users",
@@ -28,7 +28,7 @@ def test_create_user_successfully(client):
     
     assert user.username == "u1"
     assert user.email == "u1@example.com"
-    assert user.check_password("P@ssw0rd")
+    assert user.check_password("NewApiUser2024!")
 
 
 def test_get_users_list_requires_authentication(client):
@@ -49,7 +49,7 @@ def test_create_user_with_duplicate_username_returns_400(client):
     payload = {
         "username": "u1",
         "email": "u1@example.com",
-        "password": "P@ssw0rd"
+        "password": "NewApiUser2024!"
     }
     # Create first user
     response1 = client.post(
@@ -74,7 +74,7 @@ def test_create_user_with_duplicate_email_returns_400(client):
     payload1 = {
         "username": "u1",
         "email": "u1@example.com",
-        "password": "P@ssw0rd"
+        "password": "NewApiUser2024!"
     }
     client.post(
         "/api/users",
@@ -84,8 +84,8 @@ def test_create_user_with_duplicate_email_returns_400(client):
 
     payload2 = {
         "username": "u2",
-        "email": "u1@example.com",  # Duplicate email
-        "password": "P@ssw0rd"
+        "email": "u1@example.com",
+        "password": "AnotherPass2024@"
     }
     response = client.post(
         "/api/users",
@@ -112,7 +112,7 @@ def test_get_user_with_valid_token_returns_user_data(client, user, auth_headers)
 def test_get_followers_returns_empty_list_for_new_user(client, user, auth_headers):
     """Test that a new user has no followers."""
     user2 = User(username="testuser2", email="testuser2@example.com")
-    user2.set_password("testpass2")
+    user2.set_password("SecondUserPass2024!")
     db.session.add(user2)
     db.session.commit()
 
@@ -128,7 +128,7 @@ def test_get_followers_returns_empty_list_for_new_user(client, user, auth_header
 def test_get_following_returns_empty_list_for_new_user(client, user, auth_headers):
     """Test that a new user is not following anyone."""
     user2 = User(username="testuser2", email="testuser2@example.com")
-    user2.set_password("testpass2")
+    user2.set_password("SecondUserPass2024!")
     db.session.add(user2)
     db.session.commit()
 
@@ -163,7 +163,7 @@ def test_update_own_user_profile_succeeds(client, user, auth_headers):
 def test_update_user_with_duplicate_username_returns_400(client, user, auth_headers):
     """Test that updating to a duplicate username returns 400."""
     user2 = User(username="testuser2", email="testuser2@example.com")
-    user2.set_password("testpass2")
+    user2.set_password("SecondUserPass2024!")
     db.session.add(user2)
     db.session.commit()
 
@@ -180,7 +180,7 @@ def test_update_user_with_duplicate_username_returns_400(client, user, auth_head
 def test_update_other_user_profile_returns_403(client, user, auth_headers):
     """Test that updating another user's profile returns 403 Forbidden."""
     user2 = User(username="testuser2", email="testuser2@example.com")
-    user2.set_password("testpass2")
+    user2.set_password("SecondUserPass2024!")
     db.session.add(user2)
     db.session.commit()
     token2 = user2.get_token()

@@ -47,10 +47,10 @@ def user(client):
     Create a test user for authentication tests.
     
     Returns:
-        User: A user instance with username 'testuser' and password 'testpass'
+        User: A user instance with username 'testuser' and password 'TestPass2024!'
     """
     user = User(username="testuser", email="testuser@example.com")
-    user.set_password("testpass")
+    user.set_password("TestPass2024!")
     db.session.add(user)
     db.session.commit()
     return user
@@ -76,7 +76,7 @@ def auth_headers(user: User):
 def second_user(client):
     """Create a second test user for testing interactions between users."""
     user = User(username="otheruser", email="otheruser@example.com")
-    user.set_password("otherpass")
+    user.set_password("OtherUserPass2024!")
     db.session.add(user)
     db.session.commit()
     return user
@@ -116,7 +116,7 @@ def is_logged_in(client):
     )
 
 
-def create_test_user(username="testuser", email="testuser@example.com", password="testpass"):
+def create_test_user(username="testuser", email="testuser@example.com", password="TestPass2024!"):
     """
     Helper function to create a test user in the database.
     

@@ -38,3 +38,6 @@ nosetests.xml
 venv
 app.db
 microblog.log*
+
+# Reference test folder (not part of the main project)
+sample_tests/

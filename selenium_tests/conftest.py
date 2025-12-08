@@ -2,6 +2,7 @@ import contextlib
 import socket
 import threading
 import time
+from unittest.mock import patch
 
 import pytest
 from seed_data import SEEDED_USERS
@@ -19,6 +20,16 @@ from config import Config
 class TestConfig(Config):
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
     POSTS_PER_PAGE = 5
+    MAIL_SERVER = None
+    WTF_CSRF_ENABLED = False
+    TESTING = True
+
+
+@pytest.fixture(scope="session", autouse=True)
+def mock_email():
+    """Mock email sending to prevent SMTP errors in tests."""
+    with patch("app.email.send_email") as mock:
+        yield mock
 
 
 @pytest.fixture(scope="session")

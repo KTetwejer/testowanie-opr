@@ -6,7 +6,7 @@ from tests.conftest import login_user_via_client
 
 
 def test_index_post(client, user):
-    login_user_via_client(client, "testuser", "testpass")
+    login_user_via_client(client, "testuser", "TestPass2024!")
     client.post("/index", data={"post": "hello"}, follow_redirects=False)
 
     post = db.session.scalar(sa.select(Post).where(Post.author == user))
@@ -14,7 +14,7 @@ def test_index_post(client, user):
 
 
 def test_edit_profile_get_and_post(client, user):
-    login_user_via_client(client, "testuser", "testpass")
+    login_user_via_client(client, "testuser", "TestPass2024!")
 
     client.post(
         "/edit_profile",
@@ -29,11 +29,11 @@ def test_edit_profile_get_and_post(client, user):
 
 def test_follow_and_unfollow(client, user):
     user2 = User(username="other", email="other@example.com")
-    user2.set_password("testpass")
+    user2.set_password("OtherUserPass2024!")
     db.session.add(user2)
     db.session.commit()
 
-    login_user_via_client(client, "testuser", "testpass")
+    login_user_via_client(client, "testuser", "TestPass2024!")
     client.post("/follow/other", follow_redirects=False)
 
     user_updated = db.session.get(User, user.id)
@@ -47,11 +47,11 @@ def test_follow_and_unfollow(client, user):
 
 def test_send_message(client, user):
     user2 = User(username="other", email="other@example.com")
-    user2.set_password("testpass")
+    user2.set_password("OtherUserPass2024!")
     db.session.add(user2)
     db.session.commit()
 
-    login_user_via_client(client, "testuser", "testpass")
+    login_user_via_client(client, "testuser", "TestPass2024!")
     client.post("/send_message/other", data={"message": "hi"}, follow_redirects=False)
 
     message = db.session.scalar(

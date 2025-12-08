@@ -12,19 +12,19 @@ SEEDED_USERS = {
     "testuser": {
         "username": "testuser",
         "email": "testuser@example.com",
-        "password": "SecurePass123!&^",
+        "password": "MyTestPass2024#",
         "about_me": "Test user bio",
     },
     "otheruser": {
         "username": "otheruser",
         "email": "otheruser@example.com",
-        "password": "SecurePass123!&^",
+        "password": "AnotherPass99$",
         "about_me": "Other user bio",
     },
     "thirduser": {
         "username": "thirduser",
         "email": "thirduser@example.com",
-        "password": "SecurePass123!&^",
+        "password": "ThirdUserPass88%",
         "about_me": "Third user bio",
     },
 }
@@ -46,24 +46,24 @@ def seed_test_data(app=None):
         db.create_all()
 
         testuser = User(username="testuser", email="testuser@example.com")
-        testuser.set_password("SecurePass123!&^")
+        testuser.set_password("MyTestPass2024#")
         testuser.about_me = "Test user bio"
         testuser.last_seen = datetime.now(timezone.utc)
 
         otheruser = User(username="otheruser", email="otheruser@example.com")
-        otheruser.set_password("SecurePass123!&^")
+        otheruser.set_password("AnotherPass99$")
         otheruser.about_me = "Other user bio"
         otheruser.last_seen = datetime.now(timezone.utc)
 
         thirduser = User(username="thirduser", email="thirduser@example.com")
-        thirduser.set_password("SecurePass123!&^")
+        thirduser.set_password("ThirdUserPass88%")
         thirduser.about_me = "Third user bio"
         thirduser.last_seen = datetime.now(timezone.utc)
 
-        post1 = Post(body="Test post 1", author=testuser)
-        post2 = Post(body="Test post 2", author=testuser)
-        post3 = Post(body="Other user post", author=otheruser)
-        post4 = Post(body="Third user post", author=thirduser)
+        post1 = Post(body="Welcome to my blog!", author=testuser)
+        post2 = Post(body="Sharing some thoughts today", author=testuser)
+        post3 = Post(body="Hello from another user", author=otheruser)
+        post4 = Post(body="Third user's first post", author=thirduser)
 
         db.session.add(testuser)
         db.session.add(otheruser)

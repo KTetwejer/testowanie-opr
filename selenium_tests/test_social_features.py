@@ -49,7 +49,7 @@ def test_followed_user_posts_appear_on_home_feed(browser, live_server):
     browser.get(f"{live_server}/index")
     WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.TAG_NAME, "h1")))
 
-    assert "Other user post" in browser.page_source
+    assert "Hello from another user" in browser.page_source
 
 
 def test_follower_count_updates_when_user_is_followed(browser, live_server):
