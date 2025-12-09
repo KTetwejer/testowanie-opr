@@ -12,7 +12,7 @@ SEEDED_USERS = {
     "testuser": {
         "username": "testuser",
         "email": "testuser@example.com",
-        "password": "MyTestPass2024#",
+        "password": "MyTestPass2025#",
         "about_me": "Test user bio",
     },
     "otheruser": {
@@ -46,7 +46,7 @@ def seed_test_data(app=None):
         db.create_all()
 
         testuser = User(username="testuser", email="testuser@example.com")
-        testuser.set_password("MyTestPass2024#")
+        testuser.set_password("MyTestPass2025#")
         testuser.about_me = "Test user bio"
         testuser.last_seen = datetime.now(timezone.utc)
 
