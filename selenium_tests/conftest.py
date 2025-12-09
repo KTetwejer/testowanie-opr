@@ -1,5 +1,7 @@
 import contextlib
+import os
 import socket
+import tempfile
 import threading
 import time
 from unittest.mock import patch
@@ -17,8 +19,12 @@ from app import create_app, db
 from config import Config
 
 
+DB_FD, DB_PATH = tempfile.mkstemp(prefix="selenium_test_db_", suffix=".sqlite")
+os.close(DB_FD)
+
+
 class TestConfig(Config):
-    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+    SQLALCHEMY_DATABASE_URI = f"sqlite:///{DB_PATH}"
     POSTS_PER_PAGE = 5
     MAIL_SERVER = None
     WTF_CSRF_ENABLED = False
@@ -26,8 +32,16 @@ class TestConfig(Config):
 
 
 @pytest.fixture(scope="session", autouse=True)
+def cleanup_db_file():
+    yield
+    try:
+        os.remove(DB_PATH)
+    except OSError:
+        pass
+
+
+@pytest.fixture(scope="session", autouse=True)
 def mock_email():
-    """Mock email sending to prevent SMTP errors in tests."""
     with patch("app.email.send_email") as mock:
         yield mock
 

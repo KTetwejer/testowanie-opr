@@ -42,7 +42,7 @@ def test_create_user_with_duplicate_username_returns_400(client):
         "email": "u1@example.com",
         "password": "NewApiUser2024!"
     }
-    # Create first user
+
     response1 = client.post(
         "/api/users",
         data=json.dumps(payload),
@@ -51,7 +51,6 @@ def test_create_user_with_duplicate_username_returns_400(client):
     assert response1.status_code == 201
     assert response1.get_json()["username"] == "u1"
 
-    # Try to create duplicate username
     response2 = client.post(
         "/api/users",
         data=json.dumps(payload),
@@ -151,7 +150,7 @@ def test_update_user_with_duplicate_username_returns_400(client, user, auth_head
     db.session.add(user2)
     db.session.commit()
 
-    update_data = {"username": "testuser2"}  # Duplicate username
+    update_data = {"username": "testuser2"}
     response = client.put(
         f"/api/users/{user.id}",
         data=json.dumps(update_data),
@@ -175,6 +174,6 @@ def test_update_other_user_profile_returns_403(client, user, auth_headers):
         f"/api/users/{user.id}",
         data=json.dumps(update_data),
         content_type="application/json",
-        headers=auth_headers2,  # Using user2's token to update user1
+        headers=auth_headers2,
     )
     assert response.status_code == 403

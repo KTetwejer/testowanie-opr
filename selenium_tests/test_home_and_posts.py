@@ -76,7 +76,7 @@ def test_post_display_includes_user_info_and_timestamp(browser, live_server):
 def test_pagination_navigation_works_correctly(browser, live_server):
     login_user(browser, live_server)
 
-    # Create multiple posts to trigger pagination
+
     create_post(browser, live_server, post_body="pagination_test_post")
     create_post(browser, live_server, post_body="pagination_test_post_2")
 

@@ -154,7 +154,6 @@ def test_password_reset_workflow_completes_successfully(browser, live_server, ap
     WebDriverWait(browser, 5).until(EC.url_contains("/auth/login"))
     assert "Your password has been reset." in browser.page_source
 
-    # Step 4: Login with new password
     WebDriverWait(browser, 5).until(
         EC.presence_of_element_located((By.NAME, "username"))
     )

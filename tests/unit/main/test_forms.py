@@ -10,13 +10,12 @@ def test_edit_profile_form_rejects_duplicate_username(app, client):
     db.session.commit()
 
     with client.application.test_request_context():
-        # Try to change to existing username should fail
+       
         form = EditProfileForm(original_username="orig")
         form.username.data = "taken"
         assert not form.validate()
         assert len(form.username.errors) > 0
 
-        # Keeping original username should succeed
         form2 = EditProfileForm(original_username="orig")
         form2.username.data = "orig"
         assert form2.validate()

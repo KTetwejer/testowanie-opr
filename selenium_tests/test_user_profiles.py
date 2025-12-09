@@ -83,7 +83,7 @@ def test_own_profile_shows_edit_and_export_links(browser, live_server):
     browser.get(f"{live_server}/user/{SEEDED_USERS['testuser']['username']}")
     WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.TAG_NAME, "h1")))
 
-    # Verify own profile links
+
     message_links = browser.find_elements(By.LINK_TEXT, "Send private message")
     assert len(message_links) == 0
 

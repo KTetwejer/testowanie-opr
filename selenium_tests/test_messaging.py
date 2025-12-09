@@ -78,7 +78,7 @@ def test_message_count_updates_after_receiving_message(browser, live_server):
     assert message_count_el.text.strip() == "1"
     assert message_count_el.value_of_css_property("visibility") == "visible"
 
-    # Read messages - badge should disappear
+
     browser.get(f"{live_server}/messages")
     WebDriverWait(browser, 5).until(
         EC.presence_of_element_located((By.TAG_NAME, "body"))
@@ -86,7 +86,6 @@ def test_message_count_updates_after_receiving_message(browser, live_server):
 
     assert "Hello, this is a test message!" in browser.page_source
 
-    # Verify badge is hidden after reading
     message_count_el = browser.find_element(By.CSS_SELECTOR, "#message_count")
     assert not message_count_el.is_displayed()
 

@@ -34,13 +34,12 @@ def test_registration_form_rejects_duplicate_username(app, client):
 
 def test_reset_password_form_validates_password_match(app, client):
     with client.application.test_request_context():
-        # Matching passwords should validate
+
         form = ResetPasswordForm()
         form.password.data = "a"
         form.password2.data = "a"
         assert form.validate()
 
-        # Non-matching passwords should fail validation
         form2 = ResetPasswordForm()
         form2.password.data = "a"
         form2.password2.data = "b"
@@ -55,12 +54,11 @@ def test_login_form_requires_username_and_password(app, client):
 
 def test_reset_password_request_form_validates_email_format(app, client):
     with client.application.test_request_context():
-        # Valid email should pass
         form_valid = ResetPasswordRequestForm()
         form_valid.email.data = "user@example.com"
         assert form_valid.validate()
 
-        # Invalid email should fail
+
         form_invalid = ResetPasswordRequestForm()
         form_invalid.email.data = "not-an-email"
         assert not form_invalid.validate()

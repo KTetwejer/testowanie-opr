@@ -45,7 +45,6 @@ def test_followed_user_posts_appear_on_home_feed(browser, live_server):
 
 
 def test_follower_count_updates_when_user_is_followed(browser, live_server):
-    """Test that follower count increases when a user is followed."""
     login_user(browser, live_server)
 
     browser.get(f"{live_server}/user/{SEEDED_USERS['otheruser']['username']}")
